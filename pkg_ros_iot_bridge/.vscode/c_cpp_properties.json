@@ -1,0 +1,20 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/opt/ros/melodic/include/**",
+        "/home/magnum/catkin_ws/devel/include/**",
+        "/home/magnum/catkin_ws/src/actionlib_tutorials/include/**",
+        "/home/magnum/catkin_ws/src/beginner_tutorials/include/**",
+        "/home/magnum/catkin_ws/src/pkg_iot_ros_bridge/include/**",
+        "/home/magnum/catkin_ws/src/pkg_ros_actions/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}

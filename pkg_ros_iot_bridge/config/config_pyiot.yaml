@@ -1,0 +1,11 @@
+config_iot:
+  mqtt:
+    server_url: "broker.mqttdashboard.com"
+    server_port: 1883
+    topic_sub: "eyrc/sVaPtIeT/iot_to_ros"
+    topic_pub: "eyrc/sVaPtIeT/ros_to_iot"
+    qos: 0
+    sub_cb_ros_topic: "/ros_iot_bridge/mqtt/sub"
+
+  google_apps:
+    spread_sheet_id: "AKfycbwudJ-kZC9W4JUhvAfLhecgLoN1MxJHpSBpbKf5FhYb61cwquQ"

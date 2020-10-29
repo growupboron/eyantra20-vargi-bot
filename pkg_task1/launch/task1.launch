@@ -1,0 +1,11 @@
+<launch>
+    
+    <rosparam file ="$(find pkg_ros_iot_bridge)/config/config_pyiot.yaml"/>
+    <node pkg="pkg_task1" type="shell_webpages_launch.sh" name="webpage_launch" output="screen">
+        <param name="cmd" value="$(find pkg_task1)/launch/shell_webpages_launch.sh"/>
+    </node>
+    <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" />
+    <node name="node_action_server_ros_iot_bridge" pkg="pkg_ros_iot_bridge" type="node_action_server_ros_iot_bridge.py" output="screen" />
+    <node name="node_simple_action_server_turtle" pkg="pkg_task1" type="node_simple_action_server_turtle.py" output="screen" />
+    <node name="node_iot_action_client_turtle" pkg="pkg_task1" type="node_iot_action_client_turtle.py" output="screen" />
+</launch>
