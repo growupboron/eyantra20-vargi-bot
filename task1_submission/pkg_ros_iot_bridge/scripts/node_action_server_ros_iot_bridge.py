@@ -6,10 +6,10 @@ import rospy
 import actionlib
 import threading
 
-from pkg_iot_ros_bridge.msg import msgIotRosAction      # Message Class that is used by ROS Actions internally
-from pkg_iot_ros_bridge.msg import msgIotRosGoal        # Message Class that is used for Goal Messages
-from pkg_iot_ros_bridge.msg import msgIotRosResult      # Message Class that is used for Result Messages
-from pkg_iot_ros_bridge.msg import msgIotRosFeedback    # Message Class that is used for Feedback Messages    
+from pkg_ros_iot_bridge.msg import msgIotRosAction     # Message Class that is used by ROS Actions internally
+from pkg_ros_iot_bridge.msg import msgIotRosGoal        # Message Class that is used for Goal Messages
+from pkg_ros_iot_bridge.msg import msgIotRosResult      # Message Class that is used for Result Messages
+from pkg_ros_iot_bridge.msg import msgIotRosFeedback    # Message Class that is used for Feedback Messages    
 
 from pkg_iot_ros_bridge.msg import msgMqttSub           # Message Class for MQTT Subscription Messages
 
