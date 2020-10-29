@@ -18,7 +18,7 @@ add_message_files(
 
 add_action_files(
   DIRECTORY action
-  FILES msgIotRos.action
+  FILES msgRosIot.action
 )
 
 generate_messages(

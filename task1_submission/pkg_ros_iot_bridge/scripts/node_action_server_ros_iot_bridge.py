@@ -1,19 +1,13 @@
 #!/usr/bin/env python
 
-# ROS Node - Action Server - IoT ROS Bridge
-
 import rospy
 import actionlib
 import threading
 
-from pkg_ros_iot_bridge.msg import msgIotRosAction     # Message Class that is used by ROS Actions internally
-from pkg_ros_iot_bridge.msg import msgIotRosGoal        # Message Class that is used for Goal Messages
-from pkg_ros_iot_bridge.msg import msgIotRosResult      # Message Class that is used for Result Messages
-from pkg_ros_iot_bridge.msg import msgIotRosFeedback    # Message Class that is used for Feedback Messages    
-
-from pkg_iot_ros_bridge.msg import msgMqttSub           # Message Class for MQTT Subscription Messages
-
-from pyiot import iot                                   # Custom Python Module to perfrom MQTT Tasks
+from pkg_ros_iot_bridge.msg import  msgRosIotAction 
+from pkg_ros_iot_bridge.msg import msgRosIotResult      
+from pkg_iot_ros_bridge.msg import msgMqttSub          
+from pyiot import iot                                  
 
 
 class IotRosBridgeActionServer:
@@ -22,7 +16,7 @@ class IotRosBridgeActionServer:
     def __init__(self):
         # Initialize the Action Server
         self._as = actionlib.ActionServer('/action_ros_iot',
-                                          msgIotRosAction,
+                                          msgRosIotAction,
                                           self.on_goal,
                                           self.on_cancel,
                                           auto_start=False)
@@ -37,15 +31,7 @@ class IotRosBridgeActionServer:
         self._config_google_spreadsheet_id = param_config_iot['google_apps']['spread_sheet_id']
         print(param_config_iot)
 
-
-        # Initialize ROS Topic Publication
-        # Incoming message from MQTT Subscription will be published on a ROS Topic (/ros_iot_bridge/mqtt/sub).
-        # ROS Nodes can subscribe to this ROS Topic (/ros_iot_bridge/mqtt/sub) to get messages from MQTT Subscription.
         self._handle_ros_pub = rospy.Publisher(self._config_mqtt_sub_cb_ros_topic, msgMqttSub, queue_size=10)
-
-
-        # Subscribe to MQTT Topic (eyrc/xYzqLm/iot_to_ros) which is defined in 'config_iot_ros.yaml'.
-        # self.mqtt_sub_callback() function will be called when there is a message from MQTT Subscription.
         ret = iot.mqtt_subscribe_thread_start(  self.mqtt_sub_callback, 
                                                         self._config_mqtt_server_url, 
                                                         self._config_mqtt_server_port, 
@@ -56,8 +42,6 @@ class IotRosBridgeActionServer:
         else:
             rospy.logerr("Failed to start MQTT Subscribe Thread")
 
-
-        # Start the Action Server
         self._as.start()
         
         rospy.loginfo("Started ROS-IoT Bridge Action Server.")
@@ -90,9 +74,6 @@ class IotRosBridgeActionServer:
             
             if((goal.mode == "pub") or (goal.mode == "sub")):
                 goal_handle.set_accepted()
-                
-                # Start a new thread to process new goal from the client (For Asynchronous Processing of Goals)
-                # 'self.process_goal' - is the function pointer which points to a function that will process incoming Goals
                 thread = threading.Thread(  name="worker",
                                             target=self.process_goal,
                                             args=(goal_handle,) )
@@ -106,12 +87,10 @@ class IotRosBridgeActionServer:
             goal_handle.set_rejected()
             return
 
-
-    # This function is called is a separate thread to process Goal.
     def process_goal(self, goal_handle):
 
         flag_success = False
-        result = msgIotRosResult()
+        result = msgRosIotResult()
 
         goal_id = goal_handle.get_goal_id()
         rospy.loginfo("Processing goal : " + str(goal_id.id))
@@ -172,8 +151,6 @@ class IotRosBridgeActionServer:
 
         rospy.loginfo("Goal ID: " + str(goal_id.id) + " Goal Processing Done.")
 
-    
-    # This function will be called when Goal Cancel request is send to the Action Server
     def on_cancel(self, goal_handle):
         rospy.loginfo("Received cancel request.")
         goal_id = goal_handle.get_goal_id()
@@ -183,7 +160,7 @@ class IotRosBridgeActionServer:
 def main():
     rospy.init_node('node_iot_ros_bridge_action_server')
 
-    action_server = IotRosBridgeActionServer()
+    IotRosBridgeActionServer()
 
     rospy.spin()
 
